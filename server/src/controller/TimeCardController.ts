@@ -8,7 +8,7 @@ export class TimeCardController {
 	}
 
 	async one(request: Request, response: Response, next: NextFunction) {
-		return TimeCard.findOne(request.params.id, { relations: ["teacher"] });
+		return TimeCard.findOne({ where: { id: parseInt(request.params.id) }, relations: ["teacher"] });
 	}
 
 
@@ -17,12 +17,12 @@ export class TimeCardController {
 	}
 
 	async remove(request: Request, response: Response, next: NextFunction) {
-		let timecardToRemove = await TimeCard.findOne(request.params.id);
+		let timecardToRemove = await TimeCard.findOneBy({ id: parseInt(request.params.id) });
 		await TimeCard.remove(timecardToRemove);
 	}
 
 	async update(request: Request, response: Response, next: NextFunction) {
-		const timecard = await TimeCard.findOne(request.params.id);
+		const timecard = await TimeCard.findOneBy({ id: parseInt(request.params.id) });
 		const data = request.body;
 		Object.assign(timecard, data);
 		return timecard.save();

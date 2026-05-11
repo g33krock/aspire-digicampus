@@ -8,7 +8,7 @@ export class RelatedServiceController {
 	}
 
 	async one(request: Request, response: Response, next: NextFunction) {
-		return RelatedService.findOne(request.params.id, { relations: ["student", "teacher", "relatedServiceRole"] });
+		return RelatedService.findOne({ where: { id: parseInt(request.params.id) }, relations: ["student", "teacher", "relatedServiceRole"] });
 	}
 
 
@@ -17,12 +17,12 @@ export class RelatedServiceController {
 	}
 
 	async remove(request: Request, response: Response, next: NextFunction) {
-		let relatedServiceToRemove = await RelatedService.findOne(request.params.id);
+		let relatedServiceToRemove = await RelatedService.findOneBy({ id: parseInt(request.params.id) });
 		await RelatedService.remove(relatedServiceToRemove);
 	}
 
 	async update(request: Request, response: Response, next: NextFunction) {
-		const relatedService = await RelatedService.findOne(request.params.id);
+		const relatedService = await RelatedService.findOneBy({ id: parseInt(request.params.id) });
 		const data = request.body;
 		Object.assign(relatedService, data);
 		return relatedService.save();

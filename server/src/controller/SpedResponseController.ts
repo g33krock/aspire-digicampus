@@ -8,7 +8,7 @@ export class SpedResponseController {
 	}
 
 	async one(request: Request, response: Response, next: NextFunction) {
-		return SpedResponse.findOne(request.params.id, { relations: ["student", "teacher"] });
+		return SpedResponse.findOne({ where: { id: parseInt(request.params.id) }, relations: ["student", "teacher"] });
 	}
 
 
@@ -17,12 +17,12 @@ export class SpedResponseController {
 	}
 
 	async remove(request: Request, response: Response, next: NextFunction) {
-		let spedResponseToRemove = await SpedResponse.findOne(request.params.id);
+		let spedResponseToRemove = await SpedResponse.findOneBy({ id: parseInt(request.params.id) });
 		await SpedResponse.remove(spedResponseToRemove);
 	}
 
 	async update(request: Request, response: Response, next: NextFunction) {
-		const spedResponse = await SpedResponse.findOne(request.params.id);
+		const spedResponse = await SpedResponse.findOneBy({ id: parseInt(request.params.id) });
 		const data = request.body;
 		Object.assign(spedResponse, data);
 		return spedResponse.save();

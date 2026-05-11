@@ -8,7 +8,7 @@ export class RelatedServiceRoleController {
 	}
 
 	async one(request: Request, response: Response, next: NextFunction) {
-		return RelatedServiceRole.findOne(request.params.id);
+		return RelatedServiceRole.findOneBy({ id: parseInt(request.params.id) });
 	}
 
 
@@ -17,12 +17,12 @@ export class RelatedServiceRoleController {
 	}
 
 	async remove(request: Request, response: Response, next: NextFunction) {
-		let relatedServiceRoleToRemove = await RelatedServiceRole.findOne(request.params.id);
+		let relatedServiceRoleToRemove = await RelatedServiceRole.findOneBy({ id: parseInt(request.params.id) });
 		await RelatedServiceRole.remove(relatedServiceRoleToRemove);
 	}
 
 	async update(request: Request, response: Response, next: NextFunction) {
-		const relatedServiceRole = await RelatedServiceRole.findOne(request.params.id);
+		const relatedServiceRole = await RelatedServiceRole.findOneBy({ id: parseInt(request.params.id) });
 		const data = request.body;
 		Object.assign(relatedServiceRole, data);
 		return relatedServiceRole.save();

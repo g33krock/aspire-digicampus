@@ -8,7 +8,7 @@ export class TranscriptController {
     }
 
     async one(request: Request, response: Response, next: NextFunction) {
-        return Transcript.findOne(request.params.id, { relations: ["student", "schedules", "campus"] });
+        return Transcript.findOne({ where: { id: parseInt(request.params.id) }, relations: ["student", "schedules", "campus"] });
     }
 
 
@@ -17,12 +17,12 @@ export class TranscriptController {
     }
 
     async remove(request: Request, response: Response, next: NextFunction) {
-        let transcriptToRemove = await Transcript.findOne(request.params.id);
+        let transcriptToRemove = await Transcript.findOneBy({ id: parseInt(request.params.id) });
         await Transcript.remove(transcriptToRemove);
     }
 
     async update(request: Request, response: Response, next: NextFunction) {
-        const transcript = await Transcript.findOne(request.params.id);
+        const transcript = await Transcript.findOneBy({ id: parseInt(request.params.id) });
         const data = request.body;
         Object.assign(transcript, data);
         return transcript.save();

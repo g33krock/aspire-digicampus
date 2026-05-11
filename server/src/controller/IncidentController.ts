@@ -8,7 +8,7 @@ export class IncidentController {
 	}
 
 	async one(request: Request, response: Response, next: NextFunction) {
-		return Incident.findOne(request.params.id, { relations: ["students", "teachers"] });
+		return Incident.findOne({ where: { id: parseInt(request.params.id) }, relations: ["students", "teachers"] });
 	}
 
 
@@ -17,12 +17,12 @@ export class IncidentController {
 	}
 
 	async remove(request: Request, response: Response, next: NextFunction) {
-		let incidentToRemove = await Incident.findOne(request.params.id);
+		let incidentToRemove = await Incident.findOneBy({ id: parseInt(request.params.id) });
 		await Incident.remove(incidentToRemove);
 	}
 
 	async update(request: Request, response: Response, next: NextFunction) {
-		const incident = await Incident.findOne(request.params.id);
+		const incident = await Incident.findOneBy({ id: parseInt(request.params.id) });
 		const data = request.body;
 		Object.assign(incident, data);
 		return incident.save();

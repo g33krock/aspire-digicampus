@@ -8,7 +8,7 @@ export class VideoController {
 	}
 
 	async one(request: Request, response: Response, next: NextFunction) {
-		return Video.findOne(request.params.id);
+		return Video.findOneBy({ id: parseInt(request.params.id) });
 	}
 
 
@@ -17,12 +17,12 @@ export class VideoController {
 	}
 
 	async remove(request: Request, response: Response, next: NextFunction) {
-		let videoToRemove = await Video.findOne(request.params.id);
+		let videoToRemove = await Video.findOneBy({ id: parseInt(request.params.id) });
 		await Video.remove(videoToRemove);
 	}
 
 	async update(request: Request, response: Response, next: NextFunction) {
-		const video = await Video.findOne(request.params.id);
+		const video = await Video.findOneBy({ id: parseInt(request.params.id) });
 		const data = request.body;
 		Object.assign(video, data);
 		return video.save();

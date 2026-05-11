@@ -8,7 +8,7 @@ export class StaffAttendanceController {
 	}
 
 	async one(request: Request, response: Response, next: NextFunction) {
-		return StaffAttendance.findOne(request.params.id);
+		return StaffAttendance.findOneBy({ id: parseInt(request.params.id) });
 	}
 
 	async save(request: Request, response: Response, next: NextFunction) {
@@ -16,12 +16,12 @@ export class StaffAttendanceController {
 	}
 
 	async remove(request: Request, response: Response, next: NextFunction) {
-		const staffAttendanceToRemove = await StaffAttendance.findOne(request.params.id);
+		const staffAttendanceToRemove = await StaffAttendance.findOneBy({ id: parseInt(request.params.id) });
 		await StaffAttendance.remove(staffAttendanceToRemove);
 	}
 
 	async update(request: Request, response: Response, next: NextFunction) {
-		const staffAttendance = await StaffAttendance.findOne(request.params.id);
+		const staffAttendance = await StaffAttendance.findOneBy({ id: parseInt(request.params.id) });
 		const data = request.body;
 		Object.assign(staffAttendance, data);
 		return staffAttendance.save();

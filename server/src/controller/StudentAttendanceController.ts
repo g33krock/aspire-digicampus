@@ -8,7 +8,7 @@ export class StudentAttendanceController {
 	}
 
 	async one(request: Request, response: Response, next: NextFunction) {
-		return StudentAttendance.findOne(request.params.id, { relations: ["student", "schoolday"] });
+		return StudentAttendance.findOne({ where: { id: parseInt(request.params.id) }, relations: ["student", "schoolday"] });
 	}
 
 	async save(request: Request, response: Response, next: NextFunction) {
@@ -16,12 +16,12 @@ export class StudentAttendanceController {
 	}
 
 	async remove(request: Request, response: Response, next: NextFunction) {
-		const studentToRemove = await StudentAttendance.findOne(request.params.id);
+		const studentToRemove = await StudentAttendance.findOneBy({ id: parseInt(request.params.id) });
 		await StudentAttendance.remove(studentToRemove);
 	}
 
 	async update(request: Request, response: Response, next: NextFunction) {
-		const student = await StudentAttendance.findOne(request.params.id);
+		const student = await StudentAttendance.findOneBy({ id: parseInt(request.params.id) });
 		const data = request.body;
 		Object.assign(student, data);
 		return student.save();

@@ -8,7 +8,7 @@ export class RoleController {
 	}
 
 	async one(request: Request, response: Response, next: NextFunction) {
-		return Role.findOne(request.params.id, { relations: ["teacher"] });
+		return Role.findOne({ where: { id: parseInt(request.params.id) }, relations: ["teacher"] });
 	}
 
 
@@ -17,12 +17,12 @@ export class RoleController {
 	}
 
 	async remove(request: Request, response: Response, next: NextFunction) {
-		let studentToRemove = await Role.findOne(request.params.id);
+		let studentToRemove = await Role.findOneBy({ id: parseInt(request.params.id) });
 		await Role.remove(studentToRemove);
 	}
 
 	async update(request: Request, response: Response, next: NextFunction) {
-		const student = await Role.findOne(request.params.id);
+		const student = await Role.findOneBy({ id: parseInt(request.params.id) });
 		const data = request.body;
 		Object.assign(student, data);
 		return student.save();

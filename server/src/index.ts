@@ -1,7 +1,7 @@
 import * as dotenv from 'dotenv';
 dotenv.config();
 import "reflect-metadata";
-import { createConnection } from "typeorm";
+import { AppDataSource } from "./data-source";
 import * as express from "express";
 import * as bodyParser from "body-parser";
 import { Request, Response } from "express";
@@ -9,33 +9,29 @@ import { Routes } from "./routes";
 import { supabase } from './utils/supabaseClient';
 
 const cors = require('cors');
-const port = process.env.PORT || 3001;
+const port = process.env.PORT || 5000;
 
-createConnection().then(async connection => {
+AppDataSource.initialize().then(async () => {
 
-	// create express app
 	const app = express();
 	app.use(bodyParser.json());
 	app.use(cors());
-	app.use(express.static("../client/build"))
+	app.use(express.static("../client/build"));
 	app.use(async (req, res, next) => {
 		const bearer = req.headers.authorization;
 		if (!bearer) {
 			return res.status(401).send();
 		}
 		const token = bearer.replace('Bearer ', '');
-		const results = await supabase.auth.api.getUser(token);
-		results.user ? next() : res.status(401).send();
-	})
+		const { data: { user }, error } = await supabase.auth.getUser(token);
+		user ? next() : res.status(401).send();
+	});
 
-
-	// register express routes from defined application routes
 	Routes.forEach(route => {
 		(app as any)[route.method](route.route, (req: Request, res: Response, next: Function) => {
 			const result = (new (route.controller as any))[route.action](req, res, next);
 			if (result instanceof Promise) {
 				result.then(result => result !== null && result !== undefined ? res.send(result) : undefined);
-
 			} else if (result !== null && result !== undefined) {
 				res.json(result);
 			}
@@ -43,7 +39,6 @@ createConnection().then(async connection => {
 	});
 
 	app.listen(port);
-
-	console.log(`Express server has started on port ${port}. Open http://localhost:${port}/users to see results`);
+	console.log(`Express server has started on port ${port}.`);
 
 }).catch(error => console.log(error));

@@ -8,7 +8,7 @@ export class TallyQuestionController {
 	}
 
 	async one(request: Request, response: Response, next: NextFunction) {
-		return TallyQuestion.findOne(request.params.id, { relations: ["student"] });
+		return TallyQuestion.findOne({ where: { id: parseInt(request.params.id) }, relations: ["student"] });
 	}
 
 
@@ -17,12 +17,12 @@ export class TallyQuestionController {
 	}
 
 	async remove(request: Request, response: Response, next: NextFunction) {
-		let tallyQuestionToRemove = await TallyQuestion.findOne(request.params.id);
+		let tallyQuestionToRemove = await TallyQuestion.findOneBy({ id: parseInt(request.params.id) });
 		await TallyQuestion.remove(tallyQuestionToRemove);
 	}
 
 	async update(request: Request, response: Response, next: NextFunction) {
-		const tallyQuestion = await TallyQuestion.findOne(request.params.id);
+		const tallyQuestion = await TallyQuestion.findOneBy({ id: parseInt(request.params.id) });
 		const data = request.body;
 		Object.assign(tallyQuestion, data);
 		return tallyQuestion.save();

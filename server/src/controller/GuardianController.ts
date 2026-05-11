@@ -8,7 +8,7 @@ export class GuardianController {
 	}
 
 	async one(request: Request, response: Response, next: NextFunction) {
-		return Guardian.findOne(request.params.id, { relations: ["student"] });
+		return Guardian.findOne({ where: { id: parseInt(request.params.id) }, relations: ["student"] });
 	}
 
 
@@ -17,12 +17,12 @@ export class GuardianController {
 	}
 
 	async remove(request: Request, response: Response, next: NextFunction) {
-		let studentToRemove = await Guardian.findOne(request.params.id);
+		let studentToRemove = await Guardian.findOneBy({ id: parseInt(request.params.id) });
 		await Guardian.remove(studentToRemove);
 	}
 
 	async update(request: Request, response: Response, next: NextFunction) {
-		const student = await Guardian.findOne(request.params.id);
+		const student = await Guardian.findOneBy({ id: parseInt(request.params.id) });
 		const data = request.body;
 		Object.assign(student, data);
 		return student.save();

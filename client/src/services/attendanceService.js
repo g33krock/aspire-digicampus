@@ -1,16 +1,10 @@
-import {baseURL} from "../baseURL";
+import { baseURL } from "../baseURL";
 import { fetcher } from './fetcher';
 
 class AttendanceService {
-    async all () {
-        const response = await fetcher(`${baseURL}/attendance`, {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              "Authorization": `Bearer ${JSON.parse(localStorage["supabase.auth.token"]).currentSession.access_token}`
-            },
-          });
-          return await response.json();
+    async all() {
+        const response = await fetcher(`${baseURL}/attendance`, { method: "GET" });
+        return await response.json();
     }
 }
 

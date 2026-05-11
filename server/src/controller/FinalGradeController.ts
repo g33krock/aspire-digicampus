@@ -8,7 +8,7 @@ export class FinalGradeController {
   }
 
   async one(request: Request, response: Response, next: NextFunction) {
-    return FinalGrade.findOne(request.params.id, { relations: ["schedule", "schedule.course", "schedule.campus", "schedule.teacher", "schedule.student"] });
+    return FinalGrade.findOne({ where: { id: parseInt(request.params.id) }, relations: ["schedule", "schedule.course", "schedule.campus", "schedule.teacher", "schedule.student"] });
   }
 
   async save(request: Request, response: Response, next: NextFunction) {

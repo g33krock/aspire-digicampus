@@ -8,7 +8,7 @@ export class GradebookController {
 	}
 
 	async one(request: Request, response: Response, next: NextFunction) {
-		return Gradebook.findOne(request.params.id, { relations: ["schedules"] });
+		return Gradebook.findOne({ where: { id: parseInt(request.params.id) }, relations: ["schedules"] });
 	}
 
 
@@ -17,12 +17,12 @@ export class GradebookController {
 	}
 
 	async remove(request: Request, response: Response, next: NextFunction) {
-		let gradebookToRemove = await Gradebook.findOne(request.params.id);
+		let gradebookToRemove = await Gradebook.findOneBy({ id: parseInt(request.params.id) });
 		await Gradebook.remove(gradebookToRemove);
 	}
 
 	async update(request: Request, response: Response, next: NextFunction) {
-		const gradebook = await Gradebook.findOne(request.params.id);
+		const gradebook = await Gradebook.findOneBy({ id: parseInt(request.params.id) });
 		const data = request.body;
 		Object.assign(gradebook, data);
 		return gradebook.save();

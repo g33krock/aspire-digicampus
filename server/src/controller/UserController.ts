@@ -8,7 +8,7 @@ export class UserController {
     }
 
     async one(request: Request, response: Response, next: NextFunction) {
-        return User.findOne(request.params.id);
+        return User.findOneBy({ id: parseInt(request.params.id) });
     }
 
     async save(request: Request, response: Response, next: NextFunction) {
@@ -16,7 +16,7 @@ export class UserController {
     }
 
     async remove(request: Request, response: Response, next: NextFunction) {
-        let userToRemove = await User.findOne(request.params.id);
+        let userToRemove = await User.findOneBy({ id: parseInt(request.params.id) });
         await User.remove(userToRemove);
     }
 

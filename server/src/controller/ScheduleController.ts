@@ -8,7 +8,7 @@ export class ScheduleController {
 	}
 
 	async one(request: Request, response: Response, next: NextFunction) {
-		return Schedule.findOne(request.params.id, { relations: ["student", "course", "teacher", "para", "campus", "student.guardians"] });
+		return Schedule.findOne({ where: { id: parseInt(request.params.id) }, relations: ["student", "course", "teacher", "para", "campus", "student.guardians"] });
 	}
 
 
@@ -17,12 +17,12 @@ export class ScheduleController {
 	}
 
 	async remove(request: Request, response: Response, next: NextFunction) {
-		let scheduleToRemove = await Schedule.findOne(request.params.id);
+		let scheduleToRemove = await Schedule.findOneBy({ id: parseInt(request.params.id) });
 		await Schedule.remove(scheduleToRemove);
 	}
 
 	async update(request: Request, response: Response, next: NextFunction) {
-		const schedule = await Schedule.findOne(request.params.id);
+		const schedule = await Schedule.findOneBy({ id: parseInt(request.params.id) });
 		const data = request.body;
 		Object.assign(schedule, data);
 		return schedule.save();

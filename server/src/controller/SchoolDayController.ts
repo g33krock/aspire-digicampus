@@ -8,7 +8,7 @@ export class SchoolDayController {
 	}
 
 	async one(request: Request, response: Response, next: NextFunction) {
-		return SchoolDay.findOne(request.params.id);
+		return SchoolDay.findOneBy({ id: parseInt(request.params.id) });
 	}
 
 
@@ -17,12 +17,12 @@ export class SchoolDayController {
 	}
 
 	async remove(request: Request, response: Response, next: NextFunction) {
-		let studentToRemove = await SchoolDay.findOne(request.params.id);
+		let studentToRemove = await SchoolDay.findOneBy({ id: parseInt(request.params.id) });
 		await SchoolDay.remove(studentToRemove);
 	}
 
 	async update(request: Request, response: Response, next: NextFunction) {
-		const schoolDay = await SchoolDay.findOne(request.params.id);
+		const schoolDay = await SchoolDay.findOneBy({ id: parseInt(request.params.id) });
 		const data = request.body;
 		Object.assign(schoolDay, data);
 		return schoolDay.save();

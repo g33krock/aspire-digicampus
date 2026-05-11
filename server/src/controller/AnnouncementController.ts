@@ -8,7 +8,7 @@ export class AnnouncementController {
 	}
 
 	async one(request: Request, response: Response, next: NextFunction) {
-		return Announcement.findOne(request.params.id);
+		return Announcement.findOneBy({ id: parseInt(request.params.id) });
 	}
 
 	async save(request: Request, response: Response, next: NextFunction) {
@@ -16,12 +16,12 @@ export class AnnouncementController {
 	}
 
 	async remove(request: Request, response: Response, next: NextFunction) {
-		const announcementToRemove = await Announcement.findOne(request.params.id);
+		const announcementToRemove = await Announcement.findOneBy({ id: parseInt(request.params.id) });
 		await Announcement.remove(announcementToRemove);
 	}
 
 	async update(request: Request, response: Response, next: NextFunction) {
-		const announcement = await Announcement.findOne(request.params.id);
+		const announcement = await Announcement.findOneBy({ id: parseInt(request.params.id) });
 		const data = request.body;
 		Object.assign(announcement, data);
 		return announcement.save();

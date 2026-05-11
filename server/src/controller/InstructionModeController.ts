@@ -8,7 +8,7 @@ export class InstructionModeController {
 	}
 
 	async one(request: Request, response: Response, next: NextFunction) {
-		return InstructionMode.findOne(request.params.id, { relations: ["student"] });
+		return InstructionMode.findOne({ where: { id: parseInt(request.params.id) }, relations: ["student"] });
 	}
 
 
@@ -17,12 +17,12 @@ export class InstructionModeController {
 	}
 
 	async remove(request: Request, response: Response, next: NextFunction) {
-		let fundingToRemove = await InstructionMode.findOne(request.params.id);
+		let fundingToRemove = await InstructionMode.findOneBy({ id: parseInt(request.params.id) });
 		await InstructionMode.remove(fundingToRemove);
 	}
 
 	async update(request: Request, response: Response, next: NextFunction) {
-		const instructionmode = await InstructionMode.findOne(request.params.id);
+		const instructionmode = await InstructionMode.findOneBy({ id: parseInt(request.params.id) });
 		const data = request.body;
 		Object.assign(instructionmode, data);
 		return instructionmode.save();

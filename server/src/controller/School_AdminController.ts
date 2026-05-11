@@ -8,7 +8,7 @@ export class School_AdminController {
 	}
 
 	async one(request: Request, response: Response, next: NextFunction) {
-		return School_Admin.findOne(request.params.id, { relations: ["campus"] });
+		return School_Admin.findOne({ where: { id: parseInt(request.params.id) }, relations: ["campus"] });
 	}
 
 
@@ -17,12 +17,12 @@ export class School_AdminController {
 	}
 
 	async remove(request: Request, response: Response, next: NextFunction) {
-		let studentToRemove = await School_Admin.findOne(request.params.id);
+		let studentToRemove = await School_Admin.findOneBy({ id: parseInt(request.params.id) });
 		await School_Admin.remove(studentToRemove);
 	}
 
 	async update(request: Request, response: Response, next: NextFunction) {
-		const student = await School_Admin.findOne(request.params.id);
+		const student = await School_Admin.findOneBy({ id: parseInt(request.params.id) });
 		const data = request.body;
 		Object.assign(student, data);
 		return student.save();

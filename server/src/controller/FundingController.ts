@@ -8,7 +8,7 @@ export class FundingController {
 	}
 
 	async one(request: Request, response: Response, next: NextFunction) {
-		return Funding.findOne(request.params.id, { relations: ["student"] });
+		return Funding.findOne({ where: { id: parseInt(request.params.id) }, relations: ["student"] });
 	}
 
 
@@ -17,12 +17,12 @@ export class FundingController {
 	}
 
 	async remove(request: Request, response: Response, next: NextFunction) {
-		let fundingToRemove = await Funding.findOne(request.params.id);
+		let fundingToRemove = await Funding.findOneBy({ id: parseInt(request.params.id) });
 		await Funding.remove(fundingToRemove);
 	}
 
 	async update(request: Request, response: Response, next: NextFunction) {
-		const funding = await Funding.findOne(request.params.id);
+		const funding = await Funding.findOneBy({ id: parseInt(request.params.id) });
 		const data = request.body;
 		Object.assign(funding, data);
 		return funding.save();
